@@ -1,6 +1,6 @@
 const name = document.querySelector('#name');
 const mail = document.querySelector('.card-text');
-const address = document.querySelector('.card-text cap');
+const address = document.querySelector('#addres');
 const img = document.querySelector('.card-img'); 
 
 
@@ -18,7 +18,7 @@ Promise.all([
     fetchData('https://randomuser.me/api/?inc=name,location,email,picture')
 ])
     .then(data => {
-        const test = console.log(data[0].results[0].location.city);
+        const test = "Hallo";
         const empName = `${data[0].results[0].name.first} ${data[0].results[0].name.last}`;
         const empMail = `${data[0].results[0].email}`;
         const empImg = `${data[0].results[0].picture.thumbnail}`;
@@ -50,9 +50,8 @@ function setMail(data){
 }
 
 function setImg(data){
-        img.src= `${data}`;
+    img.src= `${data}`;
 }
-
-function setAdd(data){
+function setAdd(data){ 
     address.innerHTML = `${data}`;
 }
