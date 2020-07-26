@@ -1,4 +1,3 @@
-
 /*
 URL
 */
@@ -8,64 +7,78 @@ const randomUsrUrl = 'https://randomuser.me/api/?results=12&inc=name,location,em
 /**
  * DOM Elements 
 */
+const gallery = document.querySelector('#gallery');
+/*
 const name = document.querySelector('#name');
 const mail = document.querySelector('.card-text');
 const address = document.querySelector('#address');
-const img = document.querySelector('.card-img'); 
+const img = document.querySelector('.card-img');
+*/
 
 /*
-FETCH FUNCTIONS
+HANDLE ALL FETCH REQUESTS
 */
-function fetchData(url){
-    return fetch(url)
-        .then(checkStatus)
-        .then(res => res.json())
-        .catch(error => console.log('Error occured', error))
-}
-
-Promise.all([
-    fetchData(randomUsrUrl)
-])
-    .then(data => {
-        const empName = `${data[0].results[0].name.first} ${data[0].results[0].name.last}`;
-        const empMail = `${data[0].results[0].email}`;
-        const empImg = `${data[0].results[0].picture.thumbnail}`;
-        const empAdd = `${data[0].results[0].location.city}, ${data[0].results[0].location.state}`;
-
-        setName(empName);
-        setMail(empMail);
-        setImg(empImg);
-        setAdd(empAdd);
-    })
-/*
-HELPER FUNCTIONS
-*/
-function checkStatus(response){
-    if(response.ok){
-        return Promise.resolve(response);
-    }else{
-        return Promise.reject( new Error(response.statusText));
+async function getJSON(url) {
+    try {
+        const response = await fetch(url);
+        return await response.json();
+    } catch (error) {
+        throw error;
     }
 }
 
-function setName(data){
-     name.innerHTML = `${data}`;
+async function getRandomUsrData(url) {
+    const usrJSON = await getJSON(url);
+
+    const profiles = usrJSON.results.map(async (user) => {
+        const name = user.name;
+        const email = user.email;
+        const picture = user.picture;
+        const location = user.location;
+
+        return {
+            name,
+            email,
+            picture,
+            location
+        }
+
+    });
+
+    return Promise.all(profiles);
 }
 
-function setMail(data){
-    mail.innerHTML = `${data}`;
-}
+/*
+HELPER FUNCTIONS
+*/
 
-function setImg(data){
-    img.src= `${data}`;
-}
-function setAdd(data){ 
-    address.innerHTML = `${data}`;
-}
 /*
 WEBDEV-Funcionality
 */
-function renderCards(){
-    console.log(fetch('https://randomuser.me/api/?results=12&inc=name,location,email,picture'));
+function createCard(data) {
+    data.map(user => {
+        const cardDiv = document.createElement('div');
+        cardDiv.className = 'card';
+        gallery.appendChild(cardDiv);
+        cardDiv.innerHTML = `
+            <div class="card-img-container">
+                <img class="card-img" src="${user.picture.medium}" alt="profile picture">
+            </div>
+            <div class="card-info-container">
+                <h3 id="name" class="card-name cap">${user.name.first} ${user.name.last}</h3>
+                <p class="card-text">${user.email}</p>
+                <p id="address" class="card-text cap">${user.location.city}, ${user.location.state}</p>
+            </div>
+    `;
+
+    });
 }
-renderCards();
+
+document.addEventListener('DOMContentLoaded', () => {
+    getRandomUsrData(randomUsrUrl)
+        .then(createCard)
+        .catch( e => {
+            gallery.innerHTML = '<h3>Something went wrong</h3>';
+            console.log(e);
+        })
+});
