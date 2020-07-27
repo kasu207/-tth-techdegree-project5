@@ -64,10 +64,16 @@ function createCard(data) {
             </div>
     `;
         cardDiv.addEventListener('click', () => {
-            const modalDiv = document.createElement('div');
-            modalDiv.className = 'modal-container';
-            gallery.appendChild(modalDiv);
-            modalDiv.innerHTML = `
+            createModal(user);
+        })
+    });
+}
+
+function createModal(user) {
+    const modalDiv = document.createElement('div');
+    modalDiv.className = 'modal-container';
+    gallery.appendChild(modalDiv);
+    modalDiv.innerHTML = `
         <div class="modal">
             <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
             <div class="modal-info-container">
@@ -82,8 +88,10 @@ function createCard(data) {
             </div>
         </div>
 `;
-        })
-    });
+    const btnClose = document.querySelector('#modal-close-btn');
+    btnClose.addEventListener('click', () => {
+       gallery.removeChild(modalDiv);
+    })
 }
 /*
 // IMPORTANT: Below is only for exceeds tasks 
