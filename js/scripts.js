@@ -86,19 +86,20 @@ function createModal(user) {
                 <p class="modal-text">${user.location.street.number} ${user.location.street.name}, ${user.location.city}, OR ${user.location.postcode}</p>
                 <p class="modal-text">${user.birthday.date}</p>
             </div>
+            <div class="modal-btn-container">
+                <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+                <button type="button" id="modal-next" class="modal-next btn">Next</button>
+            </div>
         </div>
 `;
     const btnClose = document.querySelector('#modal-close-btn');
     btnClose.addEventListener('click', () => {
-       gallery.removeChild(modalDiv);
+        gallery.removeChild(modalDiv);
     })
 }
 /*
 // IMPORTANT: Below is only for exceeds tasks 
-<div class="modal-btn-container">
-    <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
-    <button type="button" id="modal-next" class="modal-next btn">Next</button>
-</div>
+
 */
 document.addEventListener('DOMContentLoaded', () => {
     getRandomUsrData(randomUsrUrl)
@@ -107,4 +108,5 @@ document.addEventListener('DOMContentLoaded', () => {
             gallery.innerHTML = '<h3>Something went wrong</h3>';
             console.log(e);
         })
+    
 });
