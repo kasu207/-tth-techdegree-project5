@@ -9,9 +9,7 @@ const randomUsrUrl = 'https://randomuser.me/api/?results=12'
 */
 const gallery = document.querySelector('#gallery');
 
-/*
-HANDLE ALL FETCH REQUESTS
-*/
+/* HANDLE ALL FETCH REQUESTS */
 async function getJSON(url) {
     try {
         const response = await fetch(url);
@@ -45,9 +43,7 @@ async function getRandomUsrData(url) {
 
     return Promise.all(profiles);
 }
-/*
-WEBDEV-Funcionality
-*/
+/* WEBDEV-Funcionality */
 function createCard(data) {
     data.map(user => {
         const cardDiv = document.createElement('div');
@@ -97,10 +93,10 @@ function createModal(user) {
         gallery.removeChild(modalDiv);
     })
 }
-/*
-// IMPORTANT: Below is only for exceeds tasks 
+/* Search */
 
-*/
+
+/* */
 document.addEventListener('DOMContentLoaded', () => {
     getRandomUsrData(randomUsrUrl)
         .then(createCard)
@@ -108,5 +104,4 @@ document.addEventListener('DOMContentLoaded', () => {
             gallery.innerHTML = '<h3>Something went wrong</h3>';
             console.log(e);
         })
-    
 });
