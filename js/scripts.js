@@ -67,6 +67,10 @@ function createCard(data) {
 
 function createModal(user) {
     const modalDiv = document.createElement('div');
+    const d = new Date(user.birthday.date);
+    const year = d.getFullYear();
+    const month = d.getMonth();
+    const date = d.getDate();
     modalDiv.className = 'modal-container';
     gallery.appendChild(modalDiv);
     modalDiv.innerHTML = `
@@ -79,8 +83,8 @@ function createModal(user) {
                 <p class="modal-text cap">${user.location.city}</p>
                 <hr>
                 <p class="modal-text">${user.cell}</p>
-                <p class="modal-text">${user.location.street.number} ${user.location.street.name}, ${user.location.city}, OR ${user.location.postcode}</p>
-                <p class="modal-text">${user.birthday.date}</p>
+                <p class="modal-text">${user.location.street.number} ${user.location.street.name}, ${user.location.city}, ${user.location.postcode}</p>
+                <p class="modal-text">Birthday: ${year}/${month}/${date}</p>
             </div>
             <div class="modal-btn-container">
                 <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
