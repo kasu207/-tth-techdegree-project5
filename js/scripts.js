@@ -8,6 +8,9 @@ const randomUsrUrl = 'https://randomuser.me/api/?results=12'
  * DOM Elements 
 */
 const gallery = document.querySelector('#gallery');
+const input = document.querySelector('#search-input');
+const searchButton = document.querySelector('#search-submit');
+const employees = [];
 
 /* HANDLE ALL FETCH REQUESTS */
 async function getJSON(url) {
@@ -63,8 +66,31 @@ function createCard(data) {
             createModal(user);
         })
     });
+    const names = document.querySelectorAll('#name');
+    for (let i = 0; i < names.length; i++) {
+        employees.push(names[i]);
+    }
 }
-
+/* Search Funktion
+ * accepts: 
+ * SearchInput : input the user is typing in the input field
+ * emps : Array of Employee Names 
+ */
+function search(searchInput, emps) {
+    for (let i = 0; i < emps.length; i++) {
+        console.log(emps[i]);
+        if ((searchInput.length !== 0) && (emps[i].textContent.toLowerCase().includes(searchInput.toLowerCase()))) {
+            emps[i].parentNode.parentNode.style.display = '';
+        } else if (searchInput.length == 0) {
+            emps[i].parentNode.parentNode.style.display = '';
+        } else {
+            emps[i].parentNode.parentNode.style.display = 'none';
+        }
+    }
+};
+/**ModalFunction
+ * accepts: user data from createCard function
+ */
 function createModal(user) {
     const modalDiv = document.createElement('div');
     const d = new Date(user.birthday.date);
@@ -96,11 +122,16 @@ function createModal(user) {
     btnClose.addEventListener('click', () => {
         gallery.removeChild(modalDiv);
     })
+    const btnPrev = document.querySelector('#modal-prev');
+    btnPrev.addEventListener('click', () => {
+
+    });
+    const btnNext = document.querySelector('#modal-next');
+    btnNext.addEventListener('click', () => {
+
+    });
 }
-/* Search */
 
-
-/* */
 document.addEventListener('DOMContentLoaded', () => {
     getRandomUsrData(randomUsrUrl)
         .then(createCard)
@@ -108,4 +139,15 @@ document.addEventListener('DOMContentLoaded', () => {
             gallery.innerHTML = '<h3>Something went wrong</h3>';
             console.log(e);
         })
+    searchButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log(input.innerHTML)
+        search(input.value, employees);
+    });
+    input.addEventListener('keyup', (e) => {
+        e.preventDefault();
+        if (input.value != '') {
+            search(input.value, employees);
+        }
+    });
 });
