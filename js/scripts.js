@@ -43,12 +43,15 @@ async function getRandomUsrData(url) {
         }
 
     });
-
     return Promise.all(profiles);
 }
+/*
+*Helper Funktion
+ */
 /* WEBDEV-Funcionality */
 function createCard(data) {
-    data.map(user => {
+    const arrData = data;
+    data.map( (user) => {
         const cardDiv = document.createElement('div');
         cardDiv.className = 'card';
         gallery.appendChild(cardDiv);
@@ -63,7 +66,7 @@ function createCard(data) {
             </div>
     `;
         cardDiv.addEventListener('click', () => {
-            createModal(user);
+            createModal(data, user);
         })
     });
     const names = document.querySelectorAll('#name');
@@ -91,7 +94,8 @@ function search(searchInput, emps) {
 /**ModalFunction
  * accepts: user data from createCard function
  */
-function createModal(user) {
+function createModal(data, user) {
+    console.log(data.indexOf(user));
     const modalDiv = document.createElement('div');
     const d = new Date(user.birthday.date);
     const year = d.getFullYear();
@@ -124,14 +128,28 @@ function createModal(user) {
     })
     const btnPrev = document.querySelector('#modal-prev');
     btnPrev.addEventListener('click', () => {
+        let prevIndex = data.indexOf(user)-1;
+        gallery.removeChild(modalDiv);
+        if(prevIndex < 0 ){
+            prevIndex = 11;
+            createModal(data, data[prevIndex]);
+        } else {
+            createModal(data, data[prevIndex]);
+        }
+    })
 
-    });
     const btnNext = document.querySelector('#modal-next');
     btnNext.addEventListener('click', () => {
-
+        let nextIndex = data.indexOf(user)+1;
+        gallery.removeChild(modalDiv);
+        if(nextIndex > 11){
+            nextIndex = 0;
+            createModal(data, data[nextIndex]);
+        }else {
+            createModal(data, data[nextIndex]);
+        }
     });
 }
-
 document.addEventListener('DOMContentLoaded', () => {
     getRandomUsrData(randomUsrUrl)
         .then(createCard)
